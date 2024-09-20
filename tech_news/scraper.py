@@ -1,7 +1,21 @@
+import requests
+from bs4 import BeautifulSoup
+import time
+
+headers = { "user-agent": "Fake user-agent" }
+
 # Requisito 1
 def fetch(url):
-    """Seu código deve vir aqui"""
-    raise NotImplementedError
+    time.sleep(1)
+    try:
+        page = requests.get(url, timeout=3)
+    except requests.ReadTimeout:
+        return None
+    if page.status_code == 200:
+        html_page = page.text
+        return html_page
+    else:
+        return None
 
 
 # Requisito 2
