@@ -1,6 +1,7 @@
 import requests
-# from bs4 import BeautifulSoup
 import time
+# from bs4 import BeautifulSoup
+from parsel import Selector
 
 headers = {"user-agent": "Fake user-agent"}
 
@@ -21,8 +22,12 @@ def fetch(url):
 
 # Requisito 2
 def scrape_updates(html_content):
-    """Seu código deve vir aqui"""
-    raise NotImplementedError
+    return Selector(html_content).css('h2.entry-title a::attr(href)').getall()
+    # urlList = []
+    # selector = Selector(html_content)
+    # for newsUrl in selector.css('h2.entry-title a::attr(href)').getall():
+    #     urlList.append(newsUrl)
+    # return urlList
 
 
 # Requisito 3
