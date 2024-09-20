@@ -1,8 +1,9 @@
 import requests
-from bs4 import BeautifulSoup
+# from bs4 import BeautifulSoup
 import time
 
-headers = { "user-agent": "Fake user-agent" }
+headers = {"user-agent": "Fake user-agent"}
+
 
 # Requisito 1
 def fetch(url):
