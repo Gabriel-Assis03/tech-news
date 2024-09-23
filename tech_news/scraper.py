@@ -1,5 +1,6 @@
 import requests
 import time
+import re
 # from bs4 import BeautifulSoup
 from parsel import Selector
 
@@ -40,8 +41,26 @@ def scrape_next_page_link(html_content):
 
 # Requisito 4
 def scrape_news(html_content):
-    """Seu código deve vir aqui"""
-    raise NotImplementedError
+    selector = Selector(html_content)
+    newsUrl = selector.css('link[rel="canonical"]::attr(href)').get()
+    newsTitle = selector.css('h1.entry-title::text').get()
+    title = newsTitle.replace('\xa0', ' ').strip()
+    newsDate = selector.css('li.meta-date::text').get()
+    newsWriter = selector.css('span.author a.url.fn.n::text').get()
+    strTime = selector.css('li.meta-reading-time::text').get()
+    newsReadingTime = re.search(r'\d+', strTime)
+    newsCategory = selector.css('span.label::text').get()
+    summary = selector.css('div.entry-content p').xpath('string()').get()
+    newsSummary = summary.replace('\xa0', ' ').strip()
+    return {
+        "url": newsUrl,
+        "title": title,
+        "timestamp": newsDate,
+        "writer": newsWriter,
+        "reading_time": int(newsReadingTime.group()),
+        "summary": newsSummary,
+        "category": newsCategory,
+    }
 
 
 # Requisito 5
